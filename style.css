@@ -1,1 +1,110 @@
-/* Add you CSS here */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background-color: #ffe5ec;
+  color: #450920;
+  text-align: center;
+}
+
+nav {
+  background-color: #872341;
+  padding: 1rem 0;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  color: #fff0f3;
+  text-decoration: none;
+  text-transform: lowercase;
+}
+
+header {
+  background-color: #450920;
+  color: white;
+  padding: 2rem 0;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 150px;
+  border: 5px solid #fff;
+}
+
+h1 {
+  color: white;
+  margin-top: 1rem;
+}
+
+section {
+  padding: 3rem 1rem;
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.icons div {
+  font-size: 3rem;
+  color: #cc3363;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: #f9d9e6;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 250px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.music-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.music-item img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #872341;
+}
+
+.contact-icons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.contact-icons a {
+  font-size: 2.5rem;
+  color: #872341;
+}
+
+footer {
+  background-color: #872341;
+  color: white;
+  padding: 1rem 0;
+  margin-top: 2rem;
+}
