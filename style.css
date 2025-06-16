@@ -9,6 +9,9 @@ body {
 nav {
   background-color: #872341;
   padding: 1rem 0;
+  position: sticky; /* This makes the nav bar stick to the top when you scroll */
+  top: 0;           /* Stick to the very top of the page */
+  z-index: 100;     /* Make sure the nav bar stays above other content */
 }
 
 nav ul {
@@ -27,9 +30,17 @@ nav a {
 }
 
 header {
-  background-color: #450920;
-  color: white;
-  padding: 2rem 0;
+  /* Make sure your image is named 'header.jpg' (all lowercase) and is in the img folder */
+  background-image: url('./img/Headergpt.jpg'); /* Use lowercase .jpg for the filename */
+  background-size: cover; /* Make the image cover the whole header */
+  background-position: center; /* Center the image */
+  color:white;
+  padding: 4rem 0;
+}
+
+/* This moves the paragraph text in the header down a little bit */
+header p {
+  margin-top: 8rem; /* Adds space above the paragraph */
 }
 
 .avatar {
