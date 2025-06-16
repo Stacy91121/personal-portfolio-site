@@ -8,16 +8,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
-
-  <nav>
-    <ul>
-      <li><a href="#about">about me</a></li>
-      <li><a href="#skills">skills</a></li>
-      <li><a href="#projects">projects</a></li>
-      <li><a href="#music">music</a></li>
-      <li><a href="#contact">contact</a></li>
-    </ul>
-  </nav>
+  <!-- Combined nav and search bar -->
+  <div class="topbar">
+    <!-- Search bar on the left -->
+    <div class="searchbar">
+      <input type="text" id="searchInput" placeholder="Search..." />
+      <span><i class="fas fa-search"></i></span>
+      <button id="prevBtn" title="Previous result">&#8593;</button>
+      <button id="nextBtn" title="Next result">&#8595;</button>
+    </div>
+    <!-- Nav bar on the right -->
+    <nav>
+      <ul>
+        <li><a href="#about">about me</a></li>
+        <li><a href="#skills">skills</a></li>
+        <li><a href="#projects">projects</a></li>
+        <li><a href="#music">music</a></li>
+        <li><a href="#contact">contact</a></li>
+      </ul>
+    </nav>
+  </div>
 
   <header>
     <p>Scroll down to learn more about me!</p>
@@ -83,6 +93,165 @@
     <p>© 2025 Stacy Ngang</p>
   </footer>
 
+  <!-- This script makes the header interactive -->
+  <script>
+    // --- Improved search functionality for beginners ---
+    // This highlights matching words (not case sensitive) and lets you move through each match
+
+    const searchInput = document.getElementById('searchInput');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const searchbar = document.querySelector('.searchbar');
+
+    let highlights = [];
+    let currentIndex = -1;
+
+    function removeHighlights() {
+      document.querySelectorAll('.highlight').forEach(function(span) {
+        span.replaceWith(span.textContent);
+      });
+      highlights = [];
+      currentIndex = -1;
+    }
+
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlightMatches(text) {
+      if (!text) return;
+      const safeText = escapeRegExp(text);
+      // Use word boundaries (\b) to match whole words only, and 'i' for case-insensitive
+      const regex = new RegExp(`\\b${safeText}\\b`, 'gi');
+
+      // List of section ids to always search in
+      const sectionIds = ['about', 'skills', 'projects', 'music', 'contact'];
+
+      function highlightNode(node) {
+        if (node.nodeType === 3) {
+          const value = node.nodeValue;
+          if (regex.test(value)) {
+            const parts = value.split(regex);
+            let match;
+            let lastIndex = 0;
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < parts.length; i++) {
+              if (parts[i]) {
+                fragment.appendChild(document.createTextNode(parts[i]));
+                lastIndex += parts[i].length;
+              }
+              if (i < parts.length - 1) {
+                match = value.substr(lastIndex, text.length);
+                const highlightSpan = document.createElement('span');
+                highlightSpan.className = 'highlight';
+                highlightSpan.textContent = match;
+                fragment.appendChild(highlightSpan);
+                lastIndex += text.length;
+              }
+            }
+            node.parentNode.replaceChild(fragment, node);
+          }
+        } else if (
+          node.nodeType === 1 &&
+          node.childNodes &&
+          node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE'
+        ) {
+          // Always search in the main sections, skip nav and footer
+          if (
+            !node.closest('nav') &&
+            !node.closest('footer') &&
+            (
+              sectionIds.some(id => node.closest(`#${id}`)) ||
+              sectionIds.some(id => node.id === id) ||
+              node.tagName === 'HEADER'
+            )
+          ) {
+            Array.from(node.childNodes).forEach(highlightNode);
+          }
+        }
+      }
+
+      // Search in header and all main sections
+      const selectors = ['header']
+        .concat(sectionIds.map(id => `#${id}`))
+        .join(', ');
+      document.querySelectorAll(selectors).forEach(function(section) {
+        highlightNode(section);
+      });
+
+      highlights = Array.from(document.querySelectorAll('.highlight'));
+      currentIndex = highlights.length > 0 ? 0 : -1;
+      updateCurrentHighlight();
+    }
+
+    function updateCurrentHighlight() {
+      highlights.forEach(function(span) {
+        span.classList.remove('current-highlight');
+      });
+      if (currentIndex >= 0 && highlights.length > 0) {
+        const current = highlights[currentIndex];
+        current.classList.add('current-highlight');
+        current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function updateButtonVisibility(show) {
+      if (show) {
+        searchbar.classList.add('show-buttons');
+      } else {
+        searchbar.classList.remove('show-buttons');
+      }
+    }
+
+    searchInput.addEventListener('input', function() {
+      removeHighlights();
+      const text = searchInput.value.trim();
+      if (text.length > 0) {
+        updateButtonVisibility(true);
+        highlightMatches(text);
+      } else {
+        updateButtonVisibility(false);
+      }
+    });
+
+    nextBtn.addEventListener('click', function() {
+      if (highlights.length === 0) return;
+      currentIndex = (currentIndex + 1) % highlights.length;
+      updateCurrentHighlight();
+    });
+
+    prevBtn.addEventListener('click', function() {
+      if (highlights.length === 0) return;
+      currentIndex = (currentIndex - 1 + highlights.length) % highlights.length;
+      updateCurrentHighlight();
+    });
+
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        nextBtn.click();
+      }
+    });
+
+    function scrollToHeaderBottom() {
+      // Scroll to just below the header, so the next section is at the top
+      const header = document.querySelector('header');
+      const headerRect = header.getBoundingClientRect();
+      // Calculate the bottom position of the header relative to the page
+      const scrollY = window.scrollY + headerRect.bottom;
+      window.scrollTo({ top: scrollY, behavior: 'smooth' });
+    }
+
+    // Get the header element
+    const header = document.querySelector('header');
+    // When the header is clicked
+    header.addEventListener('click', function() {
+      header.classList.add('clicked');
+      // Scroll to just below the header (not to the section top)
+      scrollToHeaderBottom();
+      setTimeout(function() {
+        header.classList.remove('clicked');
+      }, 200);
+    });
+  </script>
 </body>
-</html>
 </html>

@@ -1,17 +1,29 @@
 body {
   font-family: 'Segoe UI', sans-serif;
-  margin: 0;
   background-color: #ffe5ec;
   color: #450920;
   text-align: center;
 }
 
+/* The topbar holds both the search bar and the nav bar */
+.topbar {
+  display: flex; /* Put searchbar and nav side by side */
+  justify-content: space-between; /* Space between left and right */
+  align-items: center; /* Vertically center items */
+  position: sticky; /* Stick to the top when scrolling */
+  top: 0;
+  z-index: 200;
+  background-color: #872341; /* Match the page background */
+  box-shadow: 0 2px 8px rgba(135, 35, 65, 0.08); /* Soft shadow for visibility */
+  padding: 0.5rem 2rem; /* Padding for spacing */
+}
+
 nav {
-  background-color: #872341;
-  padding: 1rem 0;
-  position: sticky; /* This makes the nav bar stick to the top when you scroll */
-  top: 0;           /* Stick to the very top of the page */
-  z-index: 100;     /* Make sure the nav bar stays above other content */
+  background: none; /* Remove background so it blends with topbar */
+  padding: 0;
+  position: static; /* Remove sticky from nav itself */
+  top: auto;
+  z-index: auto;
 }
 
 nav ul {
@@ -56,6 +68,8 @@ h1 {
 
 section {
   padding: 3rem 1rem;
+  margin-top: 4rem; /* Adds space above each section */
+  
 }
 
 .icons {
@@ -118,4 +132,105 @@ footer {
   color: white;
   padding: 1rem 0;
   margin-top: 2rem;
+}
+
+/* This makes the header change color a bit when you hover over it */
+header:hover {
+  background-color: rgba(135, 35, 65, 0.2); /* Soft pink overlay */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* This adds a simple "pop" effect when you click the header */
+header.clicked {
+  transform: scale(1.03);
+  transition: transform 0.2s;
+  /* Add scroll-margin-bottom so scroll lands at the bottom edge of header */
+  scroll-margin-bottom: 0;
+}
+
+/* Search bar styles inside the topbar */
+.searchbar {
+  display: flex;
+  align-items: center;
+  margin: 0; /* Remove margin so it fits nicely in the topbar */
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Styles for the search bar graphic above the nav */
+.searchbar {
+  display: flex; /* Put the input and icon next to each other */
+  justify-content: center; /* Center the search bar */
+  align-items: center; /* Vertically center items */
+  margin-top: 1.5rem; /* Space above the search bar */
+  margin-bottom: 0.5rem; /* Space below the search bar */
+}
+
+.searchbar input {
+  width: 300px; /* Made the search bar longer */
+  padding: 0.5rem 1rem;
+  border: 2px solid #ffe5ec;
+  border-radius: 20px 0 0 20px;
+  background-color: #cc3363;
+  color: #450920;
+  font-size: 1rem;
+  outline: none;
+}
+
+.searchbar input:disabled {
+  background-color: #fff0f3;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+.searchbar span {
+  background-color: #cc3363;
+  color: #fff;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0 20px 20px 0;
+  font-size: 1.1rem;
+  border: 2px solid #ffe5ec;
+  border-left: none;
+  display: flex;
+  align-items: center;
+}
+
+/* This highlights text that matches the search */
+.highlight {
+  background-color: yellow;
+  color: #450920;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+/* This makes the current search result stand out more */
+.current-highlight {
+  background-color: #ffb347; /* orange-yellow */
+  border: 2px solid #cc3363;
+}
+
+/* Hide the search navigation buttons by default */
+.searchbar button {
+  display: none;
+  background-color: #fff0f3;
+  border: 2px solid #cc3363;
+  color: #cc3363;
+  border-radius: 50%;
+  margin-left: 0.3rem;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+/* Show the buttons only when searching */
+.searchbar.show-buttons button {
+  display: inline-block;
+}
+
+.searchbar button:hover {
+  background-color: #ffe5ec;
 }
