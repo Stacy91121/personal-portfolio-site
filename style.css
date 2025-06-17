@@ -3,6 +3,7 @@ body {
   background-color: #ffe5ec;
   color: #450920;
   text-align: center;
+  margin: 0; /* Remove margin around the border */
 }
 
 /* The topbar holds both the search bar and the nav bar */
@@ -174,9 +175,15 @@ header.clicked {
   border: 2px solid #ffe5ec;
   border-radius: 20px 0 0 20px;
   background-color: #cc3363;
-  color: #450920;
+  color: #f9d9e6; /* Pinkish color for text when typing */
   font-size: 1rem;
   outline: none;
+}
+
+/* Change the placeholder text color to match the active text color */
+.searchbar input::placeholder {
+  color: #f9d9e6; /* Pinkish color for placeholder */
+  opacity: 1;
 }
 
 .searchbar input:disabled {
